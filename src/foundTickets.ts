@@ -35,26 +35,6 @@ export async function runFound(link, _options): Promise<object> {
 }
 
 export function parseHTML({body: $, response}: any): any {
-  // var form = $('#listing-reserve-form');
-  // var _endpoint = form.data('endpoint');
-  // var csrf = $('meta[name="csrf_token"]')[0].attribs.content;
-  // let availableTickets = 0;
-  // form.find('select[name="amount"] option').each(function(_i, elem) {
-  //     let value = $(elem).attr('value');
-  //     value = parseInt(value, 10);
-  //     if (isNaN(value)) {
-  //         throw new TypeError('Expected option.value to be of type number');
-  //     }
-  //     if (value > availableTickets) {
-  //         availableTickets = value;
-  //     }
-  // });
-  // return {
-  //     form,
-  //     _endpoint,
-  //     availableTickets,
-  //     csrf,
-  // };
   const listingId = $('header').attr('id')
   const splitURL = response.request.uri.path.split('/')
   const listingHash = splitURL[splitURL.length - 1]
