@@ -26,8 +26,8 @@ function checkPlace(){
       if(label) info.info.push({label,val})
     })
     console.log(chalk.yellow(time),separator,chalk[info.dispo ? 'green' : 'blue'](info.info.map(el => `${el.label}: ${el.val}`).join(separator)))
-  }).then(() => checkPlace()).catch( () => {
-    console.log(chalk.red('Error'))
+    //if there is place, show link to quick access
+    if (info.dispo) console.log(chalk.bgMagenta(url))
     checkPlace()
   })
 
