@@ -3,6 +3,8 @@ const chalk = require('chalk')
 const cheerio = require('cheerio')
 const notifier = require('node-notifier');
 const opn = require('opn');
+const puppeteer = require('puppeteer');
+
 
 
 const baseurl = 'https://www.ticketswap.fr' // input your url here
@@ -21,7 +23,11 @@ const reactiveValLabel = "Disponible"
 let inPurchasing = false // is buying ticket
 
 function buyTicketButton(link) {
-  opn(baseurl + link)
+  opn()
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  await page.goto(baseurl + link);
+  await page.click('div > form > button[type="submit"]');
 }
 
 function autoReservation(availableOption, htlmObj) {
