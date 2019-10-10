@@ -12,7 +12,7 @@ const autoReservationBool = true // auto open browser and resa ticket, script st
 // const interestedOptions = ['1-Day Ticket - Friday', '1-Day Ticket - Saturday', '2-days Pass - (Thursday & Friday)'] // Option interested by
 const interestedOptions = ['1-Day Ticket - Saturday', '2-days Pass - (Thursday & Friday)'] // Option interested by
 const preferNumberTickets = (a, b) => {
-  return b.text().trim().split(' x ')[0] - a.text().trim().split(' x ')[0]
+  return parseInt(b.text().trim().split(' x ')[0]) - parseInt(a.text().trim().split(' x ')[0])
 }
 
 const delayInMilliseconds = 1000; //1 second
@@ -21,7 +21,6 @@ const reactiveValLabel = "Disponible"
 let inPurchasing = false // is buying ticket
 
 function buyTicketButton(link) {
-  console.log(link)
   opn(baseurl + link)
 }
 
