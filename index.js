@@ -1,6 +1,8 @@
 const rp = require('request-promise')
 const chalk = require('chalk')
 const cheerio = require('cheerio')
+const notifier = require('node-notifier');
+const opn = require('opn');
 
 
 const url = 'https://www.ticketswap.fr/event/hellfest-2020/pass-3-jours/182ff3dd-db69-4d1a-98b0-4390edfa3649/1464290' // input your url here
@@ -40,7 +42,19 @@ function checkPlace(){
     //screen time and info in color depending if ticket are available or not
     console.log(chalk.yellow(time),separator,chalk[info.dispo ? 'green' : 'blue'](info.info.map(el => `${el.label}: ${el.val}`).join(separator)))
     //if there is place, show link to quick access
-    if (info.dispo) console.log(chalk.bgMagenta(url))
+    if (info.dispo){
+      // Notification object
+      notifier.notify({
+        'title': 'TicketSwap available ticket',
+        'subtitle': url,
+        'message': 'Click to open browser',
+        'sound': 'ding.mp3',
+        'wait': true
+      }, function () {
+        opn(url);
+      })
+      console.log(chalk.bgMagenta(url))
+    }
   })
   //When last request is finished we loop
   .then(() => checkPlace())
