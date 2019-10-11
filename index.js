@@ -14,7 +14,7 @@ const baseurl = 'https://www.ticketswap.fr' // input your url here
 const url = baseurl + '/event/pitchfork-music-festival-paris-2019/c2d3f804-08d0-4acc-967e-579a6875d584' // input your url here
 // const url = baseurl + '/event/hellfest-2020/182ff3dd-db69-4d1a-98b0-4390edfa3649' // input your url here
 const autoReservationBool = true // auto open browser and resa ticket, script stop on resa page, need to manually relaunch it
-// const interestedOptions = ['1-Day Ticket - Friday', '1-Day Ticket - Saturday', '2-days Pass - (Thursday & Friday)'] // Option interested by
+// const interestedOptions = ['Pass 3 Jours', 'Pack T-Shirt (=Pass Entrée SANS T-Shirt)', 'Pass 3 Jours CE', 'Pass Leclerc', 'Pack Bus (=Pass Entrée SANS Bus)'] // Option interested by
 const interestedOptions = ['1-Day Ticket - Saturday', '2-days Pass - (Thursday & Friday)'] // Option interested by
 const preferNumberTickets = (a, b) => {
   return parseInt(b.text().trim().split(' x ')[0]) - parseInt(a.text().trim().split(' x ')[0])
