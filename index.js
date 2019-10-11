@@ -6,7 +6,10 @@ const opn = require('opn');
 const puppeteer = require('puppeteer');
 
 
-
+const cookie = {
+  'name': 'token',
+  'value': ''
+}
 const baseurl = 'https://www.ticketswap.fr' // input your url here
 const url = baseurl + '/event/pitchfork-music-festival-paris-2019/c2d3f804-08d0-4acc-967e-579a6875d584' // input your url here
 // const url = baseurl + '/event/hellfest-2020/182ff3dd-db69-4d1a-98b0-4390edfa3649' // input your url here
@@ -26,6 +29,7 @@ function buyTicketButton(link) {
   opn()
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
+  await page.setCookie(authCookie);
   await page.goto(baseurl + link);
   await page.click('div > form > button[type="submit"]');
 }
