@@ -5,21 +5,38 @@ const notifier = require("node-notifier");
 const opn = require("opn");
 const puppeteer = require("puppeteer");
 
-const authCookie = {
-  name: "token",
-  value: ""
+const authCookie = [
+  {
+    name: "cookieAccepted",
+  },
+  {
+    name: "geoInfo",
+    value:
+  },
+  {
+    name: "session",
+  },
+  {
+    name: "sid",
+  },
+  {
+    name: "token",
+    value:
 };
+  }
+];
 const baseurl = "https://www.ticketswap.fr"; // input your url here
-const url =
-  baseurl +
-  "/event/pitchfork-music-festival-paris-2019/c2d3f804-08d0-4acc-967e-579a6875d584"; // input your url here
-// const url = baseurl + '/event/hellfest-2020/182ff3dd-db69-4d1a-98b0-4390edfa3649' // input your url here
+//const url =
+//  baseurl +
+//  "/event/pitchfork-music-festival-paris-2019/c2d3f804-08d0-4acc-967e-579a6875d584"; // input your url here
+const url = baseurl + '/event/hellfest-2020/182ff3dd-db69-4d1a-98b0-4390edfa3649' // input your url here
 const autoReservationBool = true; // auto open browser and resa ticket, script stop on resa page, need to manually relaunch it
-// const interestedOptions = ['Pass 3 Jours', 'Pack T-Shirt (=Pass Entrée SANS T-Shirt)', 'Pass 3 Jours CE', 'Pass Leclerc', 'Pack Bus (=Pass Entrée SANS Bus)'] // Option interested by
-const interestedOptions = [
-  "1-Day Ticket - Saturday",
-  "2-days Pass - (Thursday & Friday)"
-]; // Option interested by
+const interestedOptions = ['Pass 3 Jours', 'Pack T-Shirt (=Pass Entrée SANS T-Shirt)', 'Pass 3 Jours CE', 'Pass Leclerc', 'Pack Bus (=Pass Entrée SANS Bus)'] // Option interested by
+//const interestedOptions = [
+//  "1-Day Ticket - Saturday",
+//  "2-days Pass - (Thursday & Friday)"
+//]
+ // Option interested by
 const preferNumberTickets = (a, b) => {
   return (
     parseInt(
@@ -45,9 +62,13 @@ let inPurchasing = false; // is buying ticket
 async function buyTicketButton(link) {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
-  await page.goto(baseurl + link);
-  await page.setCookie(authCookie);
-  await page.click('div > form > button[type="submit"]');
+  await page.goto(baseurl + link)
+  await page.setCookie(...authCookie);
+  await page.evaluate(() => {
+    localStorage.setItem("didSetupIdentity", 1)
+  })
+  await page.goto(baseurl + link)
+  await page.click("div > form > button")
 }
 
 function autoReservation(availableOption, htlmObj) {
