@@ -1,0 +1,4 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rules": { "object-literal-sort-keys": [true, "ignore-case", "locale-compare"] }
+}
