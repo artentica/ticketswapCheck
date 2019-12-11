@@ -5,7 +5,7 @@
     "lib": ["es2015", "es2017", "dom"],
     "declaration": true,
     "outDir": "./lib",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": true,
