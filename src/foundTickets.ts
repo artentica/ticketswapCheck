@@ -1,5 +1,6 @@
-
 import * as  notifier from 'node-notifier'
+import * as chalk from 'chalk'
+import * as cheerio from 'cheerio'
 
 export function parseHTML(result) {
 
