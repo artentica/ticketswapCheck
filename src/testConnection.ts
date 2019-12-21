@@ -1,7 +1,7 @@
 // import errors from 'errors'
 import request from'./request'
 
-export function isSignedIn() {
+export async function isSignedIn() {
     return request('https://www.ticketswap.fr/profile')
         .then((result) => {
             // If we were redirected to the login page the session id wasn't valid

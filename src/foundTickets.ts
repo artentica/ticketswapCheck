@@ -7,7 +7,7 @@ import request from './request'
 import logger from './logger'
 // const utils = require('./utils');
 
-export function parseHTML(result) {
+export function parseHTML($: object) {
 
 }
 
