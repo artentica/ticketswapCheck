@@ -3,10 +3,12 @@ import * as chalk from 'chalk'
 import logger from './logger'
 
 export class Parser {
+
   options: any
   $: any
   pointer: number
   tickesAvailable: Array<object> | null
+
   constructor(options: any, body: any) {
       this.options = options;
       this.$ = body;
@@ -14,13 +16,6 @@ export class Parser {
 
       this.tickesAvailable = null;
   }
-
-
-  get isLocked() {
-    return false;
-    // return this.$('.g-recaptcha').index() >= 0
-    //     && this.$('.g-recaptcha').attr('style') !== 'display: none';
-}
 
 get tickets() {
     return this.$('.listings-item:not(.listings-item--not-for-sale)');
