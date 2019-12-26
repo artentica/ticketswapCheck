@@ -27,13 +27,13 @@ class Exception extends Error {
       this.name = name
       this.message = message
   }
-  toString() {
+  public toString() {
       return this.name + ': ' + this.message;
   }
 }
 
 export class NotSignedError extends Exception {
   constructor(message: string) {
-    super(message)
+    super(message, 'NotSignedError')
   }
 }
