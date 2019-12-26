@@ -1,8 +1,8 @@
 import * as chalk from 'chalk'
 
 // import config from './config'
-import request from './request'
 import logger from './logger'
+import request from './request'
 // import { runFound } from './foundTickets'
 
 class Main {
@@ -13,7 +13,7 @@ class Main {
   }
 
 
-  checkIfTicketsAvailable = parser => {
+  public checkIfTicketsAvailable = parser => {
     if (parser.ticketsAvailable.length === 0) {
       logger.info(chalk.blue('No tickets found!'), Date.now() - this.lastDateRequest, 'ms');
       this.lastDateRequest = Date.now();
@@ -48,7 +48,7 @@ class Main {
   //   }
   // }
 
-  run = (options: any) => {
+  public run = (options: any) => {
     return Promise.resolve()
       .then(() => {
         return request(options.url);

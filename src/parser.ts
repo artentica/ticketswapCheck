@@ -4,10 +4,10 @@ import logger from './logger'
 
 export class Parser {
 
-  options: any
-  $: any
-  pointer: number
-  tickesAvailable: Array<object> | null
+  public options: any
+  public $: any
+  public pointer: number
+  public tickesAvailable: object[] | null
 
   constructor(options: any, body: any) {
       this.options = options;
@@ -37,25 +37,25 @@ get soldInfo() {
     return this.getSoldInfo();
 }
 
-popTicket() {
+public popTicket() {
     if (this.pointer < this.ticketsAvailable.length) {
         return this.ticketsAvailable[this.pointer++];
     }
 }
 
-getSoldInfo() {
-    let $ = this.$;
-    var soldPrices = [];
+public getSoldInfo() {
+    const $ = this.$;
+    const soldPrices = [];
 
     this.soldTickets.each(function() {
-        var price = $(this).find('meta[itemprop="price"]').attr('content');
+        let price = $(this).find('meta[itemprop="price"]').attr('content');
         price = parseInt(price, 10)
 
         soldPrices.push(price);
     });
 
-    var soldTotal = soldPrices.reduce((a, b) => a + b, 0);
-    var soldAverage = soldTotal / (soldPrices.length || 1);
+    const soldTotal = soldPrices.reduce((a, b) => a + b, 0);
+    const soldAverage = soldTotal / (soldPrices.length || 1);
 
     return {
         soldTotal,
@@ -63,14 +63,14 @@ getSoldInfo() {
     };
 }
 
-getAvailableTickets() :Array<object> {
-    let $ = this.$;
-    let self = this;
+public getAvailableTickets() :object[] {
+    const $ = this.$;
+    const self = this;
     let result = [];
 
     this.tickets.each(function(i, elem) {
-        var price = $(this).find('meta[itemprop="price"]').attr('content')
-        var link = $(this).find('.listings-item--title a').attr('href');
+        let price = $(this).find('meta[itemprop="price"]').attr('content')
+        let link = $(this).find('.listings-item--title a').attr('href');
         price = parseInt(price, 10);
 
         if (! link) {
