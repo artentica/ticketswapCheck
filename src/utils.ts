@@ -1,5 +1,5 @@
-import * as fs from 'fs'
 import * as chalk from 'chalk'
+import * as fs from 'fs'
 import logger from './logger'
 
 /**
@@ -23,8 +23,8 @@ function randomTime(minTime: number, maxTime: number) {
 export function delay(fn: Function, [minTime, maxTime]: number[]) {
   const time = randomTime(minTime, maxTime);
 
-  return new Promise(function(resolve) {
-      setTimeout(function() {
+  return new Promise(resolve => {
+      setTimeout(() => {
           resolve(fn());
       }, time);
   });
@@ -52,5 +52,6 @@ export function logErrors(reason: any) {
 }
 
 export function logRequest(url: string, options: any = {method: 'GET'}) {
+  console.log(options.method)
     logger.info('%s %s', chalk.inverse(options.method), url);
 }
