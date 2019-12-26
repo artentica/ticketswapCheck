@@ -1,6 +1,6 @@
 {
   "name": "ticketswapcheck",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -13,6 +13,7 @@
     "request-promise": "^4.2.5"
   },
   "scripts": {
+    "lint": "tslint --fix --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +27,9 @@
   },
   "homepage": "https://github.com/artentica/ticketswapCheck#readme",
   "devDependencies": {
-    "@types/node": "^12.12.21"
+    "@types/node": "^12.12.21",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
   }
 }
