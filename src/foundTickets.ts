@@ -15,6 +15,6 @@ export function reserve({ form, csrf, availableTickets, _endpoint }, link, optio
 
 }
 
-export function runFound(link, options) {
+export async function runFound(link, options) : Promise<object> {
 
 }
