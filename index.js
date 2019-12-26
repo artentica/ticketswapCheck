@@ -26,6 +26,7 @@ const authCookie = [
     name: "token",
     value: "Zjc2Mzc0MzFkZTUzNjY2Zjk3YTIzZjYxMGRkNTA1ZDQ2OWMwMjJmZWE0YzUwZjJkNGJjZjEwZDE1YWEwNzJkNg"
   }]
+
 const baseurl = "https://www.ticketswap.fr"; // input your url here
 // const url =
 //   baseurl +

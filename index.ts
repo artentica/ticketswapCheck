@@ -1,5 +1,5 @@
-import {isSignedIn} from './src/testConnection'
-import request from './src/request'
+import main from './src/main'
+import config from './src/config'
 
-
-request('https://www.google.fr').then(res => console.log(res, typeof res))
+main.run(config).then(res => console.log(res, typeof res))
+// request('https://www.google.fr').then(res => console.log(res, typeof res))
