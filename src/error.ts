@@ -1,21 +1,39 @@
-export default class error extends Error {
-  constructor(m: string) {
-      super(m);
+// export default class error extends Error {
+//     static NotSignedInError: Error;
+//   constructor(m?: string) {
+//       super(m);
 
-      // Set the prototype explicitly.
-      Object.setPrototypeOf(this, error.prototype);
-  }
+//       // Set the prototype explicitly.
+//       Object.setPrototypeOf(this, error.prototype);
+//   }
 
-  DepletedTicketsError(message) {
-    this.message = message;
-    this.stack = (new Error()).stack;
+//   public DepletedTicketsError(message) {
+//     this.message = message;
+//     this.stack = (new Error()).stack;
+//   }
+//   public NoTicketsFoundError(message) {
+//     this.message = message;
+//     this.stack = (new Error()).stack;
+//   }
+//   NotSignedInError() {
+//     this.stack = (new Error()).stack;
+//   }
+// }
+
+class Exception extends Error {
+
+  constructor(message: string, name : string = 'Exception') {
+      super(message)
+      this.name = name
+      this.message = message
   }
-  NoTicketsFoundError(message) {
-    this.message = message;
-    this.stack = (new Error()).stack;
+  toString() {
+      return this.name + ': ' + this.message;
   }
-  NotSignedInError(message) {
-    this.message = message;
-    this.stack = (new Error()).stack;
+}
+
+export class NotSignedError extends Exception {
+  constructor(message: string) {
+    super(message)
   }
 }
