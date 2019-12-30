@@ -22,17 +22,17 @@
 
 class Exception extends Error {
   constructor(message: string, name: string = 'Exception') {
-    super(message);
-    this.name = name;
-    this.message = message;
+    super(message)
+    this.name = name
+    this.message = message
   }
   public toString() {
-    return this.name + ': ' + this.message;
+    return this.name + ': ' + this.message
   }
 }
 
 export class NotSignedError extends Exception {
   constructor(message: string) {
-    super(message, 'NotSignedError');
+    super(message, 'NotSignedError')
   }
 }

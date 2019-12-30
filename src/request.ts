@@ -1,15 +1,15 @@
-import * as cheerio from 'cheerio';
-import * as extractDomain from 'extract-domain';
-import * as rp from 'request-promise';
-import * as tough from 'tough-cookie';
+import * as cheerio from 'cheerio'
+import * as extractDomain from 'extract-domain'
+import * as rp from 'request-promise'
+import * as tough from 'tough-cookie'
 
-import config from './config';
-import { logRequest } from './utils';
+import config from './config'
+import { logRequest } from './utils'
 // import logger from './logger'
 
 export default function request(url: string, opts: any = {}, cookies = []) {
-  const jar = rp.jar();
-  [...cookies, ...config.cookie]
+  const jar = rp.jar()
+  ;[...cookies, ...config.cookie]
     .map(
       (cookie: object) =>
         new tough.Cookie({
@@ -19,7 +19,7 @@ export default function request(url: string, opts: any = {}, cookies = []) {
           maxAge: 31536000
         })
     )
-    .forEach(cookie => jar.setCookie(cookie.toString(), url));
+    .forEach(cookie => jar.setCookie(cookie.toString(), url))
 
   const options = Object.assign(opts, {
     uri: url,
@@ -33,11 +33,11 @@ export default function request(url: string, opts: any = {}, cookies = []) {
       return {
         response,
         body: cheerio.load(body)
-      };
+      }
     }
-  });
+  })
 
-  logRequest(url, options);
+  logRequest(url, options)
 
-  return rp(options);
+  return rp(options)
 }

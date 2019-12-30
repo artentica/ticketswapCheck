@@ -1,6 +1,6 @@
-import * as chalk from 'chalk';
-import * as fs from 'fs';
-import logger from './logger';
+import * as chalk from 'chalk'
+import * as fs from 'fs'
+import logger from './logger'
 
 /**
  * Get a randomized time between boundaries
@@ -10,7 +10,7 @@ import logger from './logger';
  * @returns {number} - Time to wait between each function call
  */
 function randomTime(minTime: number, maxTime: number) {
-  return Math.random() * (maxTime - minTime) + minTime;
+  return Math.random() * (maxTime - minTime) + minTime
 }
 
 /**
@@ -21,13 +21,13 @@ function randomTime(minTime: number, maxTime: number) {
  * @returns {Promise} - The Promise of the call function
  */
 export function delay(fn: Function, [minTime, maxTime]: number[]) {
-  const time = randomTime(minTime, maxTime);
+  const time = randomTime(minTime, maxTime)
 
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(fn());
-    }, time);
-  });
+      resolve(fn())
+    }, time)
+  })
 }
 
 /**
@@ -39,18 +39,18 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) {
  */
 export function logErrors(reason: any) {
   if (reason instanceof Error) {
-    logger.error('Error in code');
-    logger.error(reason);
+    logger.error('Error in code')
+    logger.error(reason)
   } else {
-    logger.error('Request failed');
-    logger.error('Error reason', reason.error);
+    logger.error('Request failed')
+    logger.error('Error reason', reason.error)
 
-    fs.writeFileSync('./error.log', JSON.stringify(reason));
+    fs.writeFileSync('./error.log', JSON.stringify(reason))
 
-    logger.info('Wrote response in error.log');
+    logger.info('Wrote response in error.log')
   }
 }
 
 export function logRequest(url: string, options: any = { method: 'GET' }) {
-  logger.info('%s %s', chalk.inverse(options.method), url);
+  logger.info('%s %s', chalk.inverse(options.method), url)
 }
