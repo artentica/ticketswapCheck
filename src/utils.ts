@@ -52,6 +52,5 @@ export function logErrors(reason: any) {
 }
 
 export function logRequest(url: string, options: any = {method: 'GET'}) {
-  console.log(options.method)
     logger.info('%s %s', chalk.inverse(options.method), url);
 }

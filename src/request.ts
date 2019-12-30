@@ -9,25 +9,14 @@ import { logRequest } from './utils'
 
 export default function request(url: string, opts: any ={}, cookies = []) {
   const jar = rp.jar();
-  // [...cookies,...config.cookie].forEach((cookie: object) => {
-  //   console.log(cookie, extractDomain(url))
-  //   // Put cookie in an jar which can be used across multiple requests
-  //   jar.setCookie(JSON.stringify(new tough.Cookie({
-  //     ...cookie,
-  //     domain: extractDomain(url),
-  //     httpOnly: true,
-  //     maxAge: 31536000
-  //   })), url)
-  // })
-  jar.setCookie(JSON.stringify([...cookies,...config.cookie].map((cookie: object) =>
+  [...cookies,...config.cookie].map((cookie: object) =>
     new tough.Cookie({
       ...cookie,
       domain: extractDomain(url),
       httpOnly: true,
       maxAge: 31536000
-    })
-  )), url)
-  console.log(JSON.stringify(jar))
+    })).forEach(cookie => jar.setCookie(cookie.toString(), url))
+
   const options = Object.assign(opts, {
       uri: url,
       jar,
