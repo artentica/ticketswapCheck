@@ -1,4 +1,4 @@
-import {NotSignedError} from './error'
+import {NotSignedError} from './error/index'
 import request from'./request'
 
 export default async function isSignedIn() {
