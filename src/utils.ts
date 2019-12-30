@@ -1,6 +1,6 @@
-import * as chalk from 'chalk'
-import * as fs from 'fs'
-import logger from './logger'
+import * as chalk from 'chalk';
+import * as fs from 'fs';
+import logger from './logger';
 
 /**
  * Get a randomized time between boundaries
@@ -24,9 +24,9 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) {
   const time = randomTime(minTime, maxTime);
 
   return new Promise(resolve => {
-      setTimeout(() => {
-          resolve(fn());
-      }, time);
+    setTimeout(() => {
+      resolve(fn());
+    }, time);
   });
 }
 
@@ -39,10 +39,10 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) {
  */
 export function logErrors(reason: any) {
   if (reason instanceof Error) {
-      logger.error('Error in code')
-      logger.error(reason);
-  }else {
-    logger.error('Request failed')
+    logger.error('Error in code');
+    logger.error(reason);
+  } else {
+    logger.error('Request failed');
     logger.error('Error reason', reason.error);
 
     fs.writeFileSync('./error.log', JSON.stringify(reason));
@@ -51,6 +51,6 @@ export function logErrors(reason: any) {
   }
 }
 
-export function logRequest(url: string, options: any = {method: 'GET'}) {
-    logger.info('%s %s', chalk.inverse(options.method), url);
+export function logRequest(url: string, options: any = { method: 'GET' }) {
+  logger.info('%s %s', chalk.inverse(options.method), url);
 }
