@@ -19,12 +19,12 @@ class Main {
 
       return {
         found: false,
-        parser,
+        parser
       };
     } else {
       return {
         found: true,
-        parser,
+        parser
       };
     }
   };

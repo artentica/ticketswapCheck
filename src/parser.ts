@@ -59,7 +59,7 @@ export class Parser {
 
     return {
       soldTotal,
-      soldAverage,
+      soldAverage
     };
   }
 
@@ -97,8 +97,8 @@ export class Parser {
           ` ${chalk.magenta('amount')}        : ${result.length}`,
           ` ${chalk.magenta('average price')} : ${averagePrice.toFixed(2)}`,
           ` ${chalk.magenta('lowest price')}  : ${result[0].price}`,
-          '',
-        ].join('\n'),
+          ''
+        ].join('\n')
       );
     }
 
