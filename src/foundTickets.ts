@@ -34,7 +34,7 @@ export async function runFound(link, options): Promise<object> {
   // });
 }
 
-export function parseHTML($: any) {
+export function parseHTML($: any): any {
   // var form = $('#listing-reserve-form');
   // var _endpoint = form.data('endpoint');
   // var csrf = $('meta[name="csrf_token"]')[0].attribs.content;

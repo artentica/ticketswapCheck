@@ -4,6 +4,7 @@ import config from './config'
 import logger from './logger'
 import request from './request'
 import Parser from './parser'
+import {NoTicketsFoundError} from './error'
 import { runFound } from './foundTickets'
 
 class Main {
@@ -17,7 +18,6 @@ class Main {
     if (parser.ticketsAvailable.length === 0) {
       logger.info(chalk.blue('No tickets found!'), Date.now() - this.lastDateRequest, 'ms')
       this.lastDateRequest = Date.now()
-
       return {
         found: false,
         parser
@@ -30,9 +30,9 @@ class Main {
     }
   }
 
-  buyIfFound = (options, { found, parser }) => {
+  public buyIfFound = (options, { found, parser }) => {
     const ticket = parser.popTicket()
-
+    console.log(options, { found, parser })
     if (found && ticket) {
       return runFound(ticket.link, options).then(result => {
         console.log(result)
@@ -43,11 +43,11 @@ class Main {
         // return result;
       })
     } else {
-      return Promise.reject(new errors.NoTicketsFoundError('Found no tickets to buy'))
+      return Promise.reject(new NoTicketsFoundError('Found no tickets to buy'))
     }
   }
 
-  public run = (options: any) => {
+  public run = (options: any): any => {
     return Promise.resolve()
       .then(() => {
         return request(options.url)
