@@ -92,10 +92,10 @@ export default class Parser {
     return result
   }
 
-  // public popTicket() {
-  //   if (this.pointer < this.ticketsAvailable.length) {
-  //     return this.ticketsAvailable[this.pointer++]
-  //   }
-  // }
+  public popTicket() {
+    if (this.pointer < this.ticketsAvailable.length) {
+      return this.ticketsAvailable[this.pointer++]
+    }
+  }
 
 }
