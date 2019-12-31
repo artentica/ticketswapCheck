@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio'
+import * as cheerioAdv from 'cheerio-advanced-selectors'
 import * as extractDomain from 'extract-domain'
 import * as rp from 'request-promise'
 import * as tough from 'tough-cookie'
@@ -9,6 +10,7 @@ import { logRequest } from './utils'
 
 export default function request(url: string, opts: any = {}, cookies = []) {
   const jar = rp.jar()
+  const cheerioExtended = cheerioAdv.wrap(cheerio)
   ;[...cookies, ...config.cookie]
     .map(
       (cookie: object) =>
@@ -32,7 +34,7 @@ export default function request(url: string, opts: any = {}, cookies = []) {
     transform(body: any, response: any) {
       return {
         response,
-        body: cheerio.load(body)
+        body: cheerioExtended.load(body)
       }
     }
   })
