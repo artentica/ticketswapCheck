@@ -24,38 +24,46 @@ export default class Parser {
   }
 
   get tickets() {
-    return this.$('#tickets > div:first > ul > div > a')//.find('ul > div > a')//.length//.get(0).children()//.find('h2[data-testid="available-h2"] + div').get()
+    return this.$('#tickets > div:first > ul > div > a')
+  }
+
+  private getPriceAndCurrency(str: string): { price: number; currency: string } {
+    const string = str.trim()
+    return {
+      price: parseFloat((string.match(/\d*(,|\.)\d*/g) || [])[0].replace(',', '.')),
+      currency: (str.match(/[^\d|,|\.]/g) || [])[0] || ''
+    }
   }
 
   public getAvailableTickets(): object[] {
-    // const self = this
+    const self = this
     const $ = this.$
-    let result: object[] = []
-    // console.log(this.tickets)
-    // console.log(
-    //   this.tickets
-        // .map(function(i, elem) {
-        //   console.log( elem, i,'============')
-        //   return $(elem)
-        //     .find('h3')
-        //     .text()
-        //     .trim()
-        // })
-        // .get()
-    // )
+    let result: { link: string; price: number; currency: string; numberTicket: number }[] = []
+
     this.tickets.each(function(_i, elem): void {
-      const price = $(elem)
-        .find('footer')
-        .children()
-        .last()
-        .text().split(' ')[0]
+      const priceAndCurrency = self.getPriceAndCurrency(
+        $(elem)
+          .find('footer')
+          .children()
+          .last()
+          .text()
+          .split('/')[0]
+      )
+
+      const numberTicket = parseInt(
+        $(elem)
+          .find('div > header > h3')
+          .text()
+          .trim()
+          .match(/\d*/g)[0]
+      )
 
       let link = $(elem).attr('href')
       if (!link) {
         logger.error(['', chalk.red('Expected to find link for listing'), ''].join('\n'))
       } else {
-        //link = self.options.baseUrl + link
-        result.push({ link, price })
+        link = self.options.baseUrl + link
+        result.push({ link, ...priceAndCurrency, numberTicket })
       }
     })
     return result
