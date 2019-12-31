@@ -1,9 +1,10 @@
 import * as chalk from 'chalk'
 
-// import config from './config'
+import config from './config'
 import logger from './logger'
 import request from './request'
-// import { runFound } from './foundTickets'
+import Parser from './parser'
+import { runFound } from './foundTickets'
 
 class Main {
   private lastDateRequest: number
@@ -29,27 +30,32 @@ class Main {
     }
   }
 
-  // buyIfFound = (options, { found, parser }) =>{
-  //   let ticket = parser.popTicket();
+  buyIfFound = (options, { found, parser }) => {
+    const ticket = parser.popTicket()
 
-  //   if (found && ticket) {
-  //       return runFound(ticket.link, options)
-  //           .then(result => {
-  //               if (result && result.alreadySold) {
-  //                   return tryNextTicket(options, parser);
-  //               }
+    if (found && ticket) {
+      return runFound(ticket.link, options).then(result => {
+        console.log(result)
+        // if (result && result.alreadySold) {
+        //     return tryNextTicket(options, parser);
+        // }
 
-  //               return result;
-  //           });
-  //   } else {
-  //       return Promise.reject(new errors.NoTicketsFoundError('Found no tickets to buy'));
-  //   }
-  // }
+        // return result;
+      })
+    } else {
+      return Promise.reject(new errors.NoTicketsFoundError('Found no tickets to buy'))
+    }
+  }
 
   public run = (options: any) => {
-    return Promise.resolve().then(() => {
-      return request(options.url)
-    })
+    return Promise.resolve()
+      .then(() => {
+        return request(options.url)
+      })
+      .then(res => new Parser(config, res.body))
+      .then(this.checkIfTicketsAvailable)
+      .then(this.buyIfFound.bind(null, options))
+    // .catch(runCatchHandler.bind(null, options));
   }
 }
 
