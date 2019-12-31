@@ -55,4 +55,35 @@ export function parseHTML($: any): any {
   //     availableTickets,
   //     csrf,
   // };
-}
+
+
+
+  // https://api.ticketswap.com/graphql/public/batch
+  //authorization: Bearer TOKEN
+  [
+    {
+       operationName:"addTicketsToCart",
+       variables:{
+          input:{
+             listingId:"TGlzdGluZzo0NDIxNTcw",
+             listingHash:"f80d975c78",
+             amountOfTickets:1
+          }
+       },
+       query:`mutation addTicketsToCart($input: AddTicketsToCartInput!) {
+        addTicketsToCart(input: $input) {
+          cart {
+            id
+            __typename
+          }
+          errors {
+            code
+            message
+            __typename
+          }
+          __typename
+        }
+      }
+      `
+    }
+ ]
