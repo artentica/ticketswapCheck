@@ -82,7 +82,9 @@ export default class Parser {
           '',
           chalk.blue('Found Tickets For Event'),
           ` ${chalk.magenta('amount')}        : ${sumInfo.numberTicket}`,
-          ` ${chalk.magenta('average price')} : ${(sumInfo.averagePrice / sumInfo.numberTicket).toFixed(2)} ${result[0].currency}`,
+          ` ${chalk.magenta('average price')} : ${(sumInfo.averagePrice / sumInfo.numberTicket).toFixed(2)} ${
+            result[0].currency
+          }`,
           ` ${chalk.magenta('lowest price')}  : ${result[0].price} ${result[0].currency}`,
           ''
         ].join('\n')
@@ -97,5 +99,4 @@ export default class Parser {
       return this.ticketsAvailable[this.pointer++]
     }
   }
-
 }
