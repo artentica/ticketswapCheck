@@ -66,55 +66,31 @@ export default class Parser {
         result.push({ link, ...priceAndCurrency, numberTicket })
       }
     })
+
+    result = result.sort((t1, t2) => t1.price - t2.price)
+
+    if (result.length > 0) {
+      const sumInfo = result.reduce(
+        (acc, curr) => ({
+          averagePrice: acc.averagePrice + curr.price * curr.numberTicket,
+          numberTicket: acc.numberTicket + curr.numberTicket
+        }),
+        { averagePrice: 0, numberTicket: 0 }
+      )
+      logger.info(
+        [
+          '',
+          chalk.blue('Found Tickets For Event'),
+          ` ${chalk.magenta('amount')}        : ${sumInfo.numberTicket}`,
+          ` ${chalk.magenta('average price')} : ${(sumInfo.averagePrice / sumInfo.numberTicket).toFixed(2)} ${result[0].currency}`,
+          ` ${chalk.magenta('lowest price')}  : ${result[0].price} ${result[0].currency}`,
+          ''
+        ].join('\n')
+      )
+    }
+
     return result
-    // this.tickets.each(function(i, elem) {
-    //   let price = $(this)
-    //     .find('meta[itemprop="price"]')
-    //     .attr('content')
-    //   let link = $(this)
-    //     .find('.listings-item--title a')
-    //     .attr('href')
-    //   price = parseInt(price, 10)
-
-    //   if (!link) {
-    //     logger.error(['', chalk.red('Expected to find link for listing'), ''].join('\n'))
-    //   } else {
-    //     link = self.options.baseUrl + link
-
-    //     result.push({ link, price })
-    //   }
-    // })
-
-    // result = result.sort((t1, t2) => t1.price - t2.price)
-
-    // if (result.length > 0) {
-    //   const averagePrice = result.reduce((mem, x) => mem + x.price, 0) / result.length
-    //   logger.info(
-    //     [
-    //       '',
-    //       chalk.blue('Found Tickets For Event'),
-    //       ` ${chalk.magenta('amount')}        : ${result.length}`,
-    //       ` ${chalk.magenta('average price')} : ${averagePrice.toFixed(2)}`,
-    //       ` ${chalk.magenta('lowest price')}  : ${result[0].price}`,
-    //       ''
-    //     ].join('\n')
-    //   )
-    // }
-
-    // return result
   }
-
-  // get tickets() {
-  //   return this.$('.listings-item:not(.listings-item--not-for-sale)')
-  // }
-
-  // get soldTickets() {
-  //   return this.$('.listings-item.listings-item--not-for-sale')
-  // }
-
-  // get soldInfo() {
-  //   return this.getSoldInfo()
-  // }
 
   // public popTicket() {
   //   if (this.pointer < this.ticketsAvailable.length) {
@@ -122,25 +98,4 @@ export default class Parser {
   //   }
   // }
 
-  // public getSoldInfo() {
-  //   const $ = this.$
-  //   const soldPrices = []
-
-  //   this.soldTickets.each(function() {
-  //     let price = $(this)
-  //       .find('meta[itemprop="price"]')
-  //       .attr('content')
-  //     price = parseInt(price, 10)
-
-  //     soldPrices.push(price)
-  //   })
-
-  //   const soldTotal = soldPrices.reduce((a, b) => a + b, 0)
-  //   const soldAverage = soldTotal / (soldPrices.length || 1)
-
-  //   return {
-  //     soldTotal,
-  //     soldAverage
-  //   }
-  // }
 }
