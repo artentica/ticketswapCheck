@@ -6,6 +6,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "cheerio": "^1.0.0-rc.3",
+    "cheerio-advanced-selectors": "^2.0.1",
     "debug": "^4.1.1",
     "extract-domain": "^2.2.1",
     "node-notifier": "^6.0.0",
