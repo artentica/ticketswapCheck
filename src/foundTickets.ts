@@ -1,9 +1,9 @@
-import * as chalk from 'chalk'
-import * as cheerio from 'cheerio'
-import { exec } from 'child_process'
-import * as notifier from 'node-notifier'
+// import * as chalk from 'chalk'
+// import * as cheerio from 'cheerio'
+// import { exec } from 'child_process'
+// import * as notifier from 'node-notifier'
 
-import logger from './logger'
+// import logger from './logger'
 import request from './request'
 // const utils = require('./utils');
 
@@ -13,7 +13,7 @@ export async function runFound(link, options): Promise<object> {
   // STEP 1 submit form
   // STEP 2 request /cart
 
-  return request(link).then(parseHTML)
+  return request(link, {headers: :{"authorization": `Bearer ${options.token}`}}).then(parseHTML)
   // .then(result => process(result, link, options))
   // .then((result) => {
   //     if (result.alreadySold) {
