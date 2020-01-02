@@ -7,13 +7,13 @@
 import request from './request'
 // const utils = require('./utils');
 
-export function reserve({ form, csrf, availableTickets, _endpoint }, link, options) {}
+// export function reserve({ form, csrf, availableTickets, _endpoint }, link, options) {}
 
-export async function runFound(link, options): Promise<object> {
+export async function runFound(link, _options): Promise<object> {
   // STEP 1 submit form
   // STEP 2 request /cart
 
-  return request(link, {headers: :{"authorization": `Bearer ${options.token}`}}).then(parseHTML)
+  return request(link).then(parseHTML)
   // .then(result => process(result, link, options))
   // .then((result) => {
   //     if (result.alreadySold) {
@@ -34,7 +34,7 @@ export async function runFound(link, options): Promise<object> {
   // });
 }
 
-export function parseHTML($: any): any {
+export function parseHTML({body: $, response}: any): any {
   // var form = $('#listing-reserve-form');
   // var _endpoint = form.data('endpoint');
   // var csrf = $('meta[name="csrf_token"]')[0].attribs.content;
@@ -55,18 +55,16 @@ export function parseHTML($: any): any {
   //     availableTickets,
   //     csrf,
   // };
-
-
-
-  // https://api.ticketswap.com/graphql/public/batch
-  //authorization: Bearer TOKEN
-  [
+  const listingId = $('header').attr('id')
+  const splitURL = response.request.uri.path.split('/')
+  const listingHash = splitURL[splitURL.length - 1]
+  const body = [
     {
        operationName:"addTicketsToCart",
        variables:{
           input:{
-             listingId:"TGlzdGluZzo0NDIxNTcw",
-             listingHash:"f80d975c78",
+             listingId,
+             listingHash,
              amountOfTickets:1
           }
        },
@@ -86,4 +84,8 @@ export function parseHTML($: any): any {
       }
       `
     }
- ]
+  ]
+  return request("https://api.ticketswap.com/graphql/public/batch", {method: 'POST', json: true, body, headers:{authorization: `Bearer ZmFhNWVhZjBiOGU4NmNhMjcwZTBkYTRlOTc0NGU1MGFiY2ViZWM0ZDgzODhmYzhmOWY0MjY3NmYyYmJhYTUzMw`}})
+//BEARER = Token
+  // https://api.ticketswap.com/graphql/public/batch
+}

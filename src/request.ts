@@ -23,7 +23,7 @@ export default function request(url: string, opts: any = {}, cookies = []) {
     )
     .forEach(cookie => jar.setCookie(cookie.toString(), url))
 
-  const options = Object.assign(opts, {
+  const options = Object.assign({
     uri: url,
     jar,
     method: 'GET',
@@ -37,7 +37,7 @@ export default function request(url: string, opts: any = {}, cookies = []) {
         body: cheerioExtended.load(body)
       }
     }
-  })
+  }, opts)
 
   logRequest(url, options)
 
