@@ -38,12 +38,12 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) {
  * @
  */
 export function logErrors(reason: any) {
-  if (reason instanceof Error) {
+  if (!reason.statusCode) {
     logger.error('Error in code')
     logger.error(reason)
   } else {
     logger.error('Request failed')
-    logger.error('Error reason', reason.error)
+    logger.error(`Error reason, statusCode: ${reason.statusCode}`)
 
     fs.writeFileSync('./error.log', JSON.stringify(reason))
 
