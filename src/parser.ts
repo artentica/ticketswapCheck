@@ -77,6 +77,7 @@ export default class Parser {
         }),
         { averagePrice: 0, numberTicket: 0 }
       )
+
       logger.info(
         [
           '',

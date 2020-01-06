@@ -32,10 +32,9 @@ class Main {
 
   public buyIfFound = (options, { found, parser }) => {
     const ticket = parser.popTicket()
-    console.log(options, { found, parser })
     if (found && ticket) {
-      return runFound(ticket.link, options).then(result => {
-        console.log(result)
+      return runFound(ticket.link, options).then(_result => {
+        //console.log(result)
         // if (result && result.alreadySold) {
         //     return tryNextTicket(options, parser);
         // }

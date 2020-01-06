@@ -8,7 +8,7 @@ import config from './config'
 import { logRequest } from './utils'
 // import logger from './logger'
 
-export default function request(url: string, opts: any = {}, cookies = []) {
+export default function request(url: string, opts: any = {}, cookies = []): Promise<any> {
   const jar = rp.jar()
   const cheerioExtended = cheerioAdv.wrap(cheerio)
   ;[...cookies, ...config.cookie]
