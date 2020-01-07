@@ -10,6 +10,7 @@ export default class Parser {
   constructor(options: any, body: any) {
     this.options = options
     this.$ = body
+    //next index to use
     this.pointer = 0
 
     this.tickesAvailable = null
@@ -99,5 +100,9 @@ export default class Parser {
     if (this.pointer < this.ticketsAvailable.length) {
       return this.ticketsAvailable[this.pointer++]
     }
+  }
+
+  public haveAnotherTicket() {
+    return this.pointer < this.ticketsAvailable.length
   }
 }
