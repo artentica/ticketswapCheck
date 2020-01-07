@@ -6,16 +6,20 @@ import config from './config'
 import logger from './logger'
 import request from './request'
 import Parser from './parser'
-import { NoTicketsFoundError, DepletedTicketsError } from './error'
+import * as utils from './utils'
+import { IOptions } from './interfaces'
+import { NoTicketsFoundError, DepletedTicketsError, NotSignedError } from './error'
 import { runFound } from './foundTickets'
 
 class Main {
   private lastDateRequest: number
   private amountReserved: number
+  private retries: number
 
   constructor() {
     this.lastDateRequest = Date.now()
     this.amountReserved = 0
+    this.retries = 0
   }
 
   private checkIfTicketsAvailable = parser => {
@@ -34,7 +38,7 @@ class Main {
     }
   }
 
-  private buyIfFound = (options, { found, parser }) => {
+  private buyIfFound = (options: IOptions, { found, parser }) => {
     const ticket = parser.popTicket()
     if (found && ticket) {
       return runFound(ticket.link, { ...options, amount: options.amount - this.amountReserved }).then(result => {
@@ -43,7 +47,7 @@ class Main {
         // if nothing have been bought or if we still have
         if (options.amount - this.amountReserved !== 0) {
           return this.tryNextTicket(options, parser)
-        }else {
+        } else {
           this.notifyIfTicketReserved(options)
         }
 
@@ -54,7 +58,7 @@ class Main {
     }
   }
 
-  private tryNextTicket = (options, parser) => {
+  private tryNextTicket = (options: IOptions, parser) => {
     if (parser.haveAnotherTicket()) {
       logger.info('Found another potential ticket')
 
@@ -66,8 +70,8 @@ class Main {
     }
   }
 
-  private notifyIfTicketReserved = (options) => {
-    if(this.amountReserved){
+  private notifyIfTicketReserved = options => {
+    if (this.amountReserved) {
       notifier.notify(
         {
           title: `TicketSwap ${this.amountReserved} ticket(s) reserved`,
@@ -82,7 +86,44 @@ class Main {
     }
   }
 
-  public run = (options: any): any => {
+  private runCatchHandler = (options: IOptions, error) => {
+    if (error instanceof NoTicketsFoundError) {
+      return this.retry(options)
+    }
+
+    if (error instanceof DepletedTicketsError) {
+      return this.retry(options)
+    }
+
+    if (error instanceof NotSignedError) {
+      return Promise.reject(error)
+    }
+
+    logger.error('Run execution failed with error', error)
+
+    if (options.retryPolicy.retries === -1) {
+      this.retries += 1
+      return this.retry(options)
+    }
+    if (this.retries < options.retryPolicy.retries) {
+      this.retries += 1
+      logger.info('Retries left', options.retryPolicy.retries - this.retries)
+      return this.retry(options)
+    }
+
+    return Promise.reject(error)
+  }
+
+  private retry = (options: IOptions) => {
+    return utils.delay(
+      () => {
+        return this.run(options)
+      },
+      options.retryPolicy.delay
+    )
+  }
+
+  public run = (options: IOptions): any => {
     return Promise.resolve()
       .then(() => {
         return request(options.url)
@@ -90,7 +131,7 @@ class Main {
       .then(res => new Parser(config, res.body))
       .then(this.checkIfTicketsAvailable)
       .then(this.buyIfFound.bind(null, options))
-    .catch(runCatchHandler.bind(null, options))
+      .catch(this.runCatchHandler.bind(null, options))
   }
 }
 
