@@ -1,7 +1,6 @@
 import * as chalk from 'chalk'
-// import * as cheerio from 'cheerio'
-// import { exec } from 'child_process'
-// import * as notifier from 'node-notifier'
+import * as notifier from 'node-notifier'
+import * as opn from 'opn'
 
 import logger from './logger'
 import request from './request'
@@ -14,29 +13,35 @@ export async function runFound(link, options): Promise<object> {
   // STEP 1 submit form
   // STEP 2 request /cart
 
-  return request(link).then(parseHTML).then(({listingId, listingHash, availableTickets}) => process(listingId, listingHash, availableTickets, options)).catch(_=>{})
-  // .then(result => process(result, link, options))
-  // .then((result) => {
-  //     if (result.alreadySold) {
-  //         return result;
-  //     }
+  return request(link).then(parseHTML).then(({listingId, listingHash, availableTickets}) => process(listingId, listingHash, availableTickets, options))
+  .then(data => {
+    const [result, amountOfTickets ] = data
+    if (result.alreadySold) {
+        return result
+    }
+    notifier.notify(
+      {
+        title: "TicketSwap available ticket",
+        subtitle: link,
+        message: "Click to open browser",
+        sound: "ding.mp3",
+        wait: true
+      },
+      function () {
+        opn(options.baseUrl + '/cart');
+      }
+    )
+    return {
+        alreadySold: false,
+        amountOfTickets
+    }
+})
 
-  //     notifier.notify({
-  //         title: 'TicketScoop!',
-  //         message: 'Found a ticket, now opening your cart!',
-  //         sound: true,
-  //     });
-
-  //     exec('open -a "Google Chrome" https://www.ticketswap.nl/cart');
-
-  //     return {
-  //         alreadySold: false,
-  //     };
-  // });
 }
 
-export async function process(listingId :string, listingHash: string, availableTickets: number, options: any): Promise<any> {
+async function process(listingId :string, listingHash: string, availableTickets: number, options: any): Promise<any> {
 
+  if (! availableTickets) return Promise.resolve({ alreadySold: true })
   const amountOfTickets = Math.min(options.amount, availableTickets)
   const body = [
     {
@@ -76,7 +81,7 @@ export async function process(listingId :string, listingHash: string, availableT
       ``,
   ].join('\n'));
 
-  return await request("https://api.ticketswap.com/graphql/public/batch", {method: 'POST', json: true, body, headers:{authorization: `Bearer ZmFhNWVhZjBiOGU4NmNhMjcwZTBkYTRlOTc0NGU1MGFiY2ViZWM0ZDgzODhmYzhmOWY0MjY3NmYyYmJhYTUzMw`}})
+  return await Promise.all([request("https://api.ticketswap.com/graphql/public/batch", {method: 'POST', json: true, body, headers:{authorization: `Bearer ZmFhNWVhZjBiOGU4NmNhMjcwZTBkYTRlOTc0NGU1MGFiY2ViZWM0ZDgzODhmYzhmOWY0MjY3NmYyYmJhYTUzMw`}}), amountOfTickets])
   .catch(reason => {
       utils.logErrors(reason)
       throw reason
@@ -85,7 +90,7 @@ export async function process(listingId :string, listingHash: string, availableT
   // https://api.ticketswap.com/graphql/public/batch
 }
 
-export function parseHTML({body: $, response}: any): any {
+function parseHTML({body: $, response}: any): any {
   const listingId = $('header').attr('id')
   const availableTickets = $('form select option').length
   const splitURL = response.request.uri.path.split('/')
