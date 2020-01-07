@@ -12,29 +12,35 @@
 //     this.stack = (new Error()).stack;
 //   }
 //   NotSignedInError() {
-  //     this.stack = (new Error()).stack;
-  //   }
-  // }
+//     this.stack = (new Error()).stack;
+//   }
+// }
 
-  class Exception extends Error {
-    constructor(message: string, name: string = 'Exception') {
-      super(message)
-      this.name = name
-      this.message = message
-    }
-    public toString() {
-      return this.name + ': ' + this.message
-    }
+class Exception extends Error {
+  constructor(message: string, name: string = 'Exception') {
+    super(message)
+    this.name = name
+    this.message = message
   }
+  public toString() {
+    return this.name + ': ' + this.message
+  }
+}
 
-  export class NotSignedError extends Exception {
-    constructor(message: string) {
-      super(message, 'NotSignedError')
-    }
+export class NotSignedError extends Exception {
+  constructor(message: string) {
+    super(message, 'NotSignedError')
   }
+}
 
-  export class NoTicketsFoundError extends Exception {
-    constructor(message: string) {
-      super(message, 'NoTicketsFoundError')
-    }
+export class NoTicketsFoundError extends Exception {
+  constructor(message: string) {
+    super(message, 'NoTicketsFoundError')
   }
+}
+
+export class DepletedTicketsError extends Exception {
+  constructor(message: string) {
+    super(message, 'DepletedTicketsError')
+  }
+}
