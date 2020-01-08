@@ -25,7 +25,8 @@ export default class Parser {
   }
 
   get tickets() {
-    return this.$('#tickets > div:first > ul > div > a')
+    // Available, sold, searching people
+    return (this.$('#tickets > div').length === 3)?this.$('#tickets > div:first > ul > div > a'): []
   }
 
   private getPriceAndCurrency(str: string): { price: number; currency: string } {
@@ -41,32 +42,34 @@ export default class Parser {
     const $ = this.$
     let result: { link: string; price: number; currency: string; numberTicket: number }[] = []
 
-    this.tickets.each(function(_i, elem): void {
-      const priceAndCurrency = self.getPriceAndCurrency(
-        $(elem)
-          .find('footer')
-          .children()
-          .last()
-          .text()
-          .split('/')[0]
-      )
+    if(this.tickets.length){
+      this.tickets.each(function(_i, elem): void {
+        const priceAndCurrency = self.getPriceAndCurrency(
+          $(elem)
+            .find('footer')
+            .children()
+            .last()
+            .text()
+            .split('/')[0]
+        )
 
-      const numberTicket = parseInt(
-        $(elem)
-          .find('div > header > h3')
-          .text()
-          .trim()
-          .match(/\d*/g)[0]
-      )
+        const numberTicket = parseInt(
+          $(elem)
+            .find('div > header > h3')
+            .text()
+            .trim()
+            .match(/\d*/g)[0]
+        )
 
-      let link = $(elem).attr('href')
-      if (!link) {
-        logger.error(['', chalk.red('Expected to find link for listing'), ''].join('\n'))
-      } else {
-        link = self.options.baseUrl + link
-        result.push({ link, ...priceAndCurrency, numberTicket })
-      }
-    })
+        let link = $(elem).attr('href')
+        if (!link) {
+          logger.error(['', chalk.red('Expected to find link for listing'), ''].join('\n'))
+        } else {
+          link = self.options.baseUrl + link
+          result.push({ link, ...priceAndCurrency, numberTicket })
+        }
+      })
+    }
 
     result = result.sort((t1, t2) => t1.price - t2.price)
 
