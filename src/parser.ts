@@ -65,7 +65,7 @@ export default class Parser {
         if (!link) {
           logger.error(['', chalk.red('Expected to find link for listing'), ''].join('\n'))
         } else {
-          link = self.options.baseUrl + link
+          link = utils.getBaseUrl(self.options.url) + link
           result.push({ link, ...priceAndCurrency, numberTicket })
         }
       })

@@ -30,6 +30,10 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) : Promise<any>
   })
 }
 
+export function getBaseUrl(url : string) : string {
+  return url.split('/').slice(0,3).join('/')
+}
+
 /**
  *
  *

@@ -80,7 +80,7 @@ class Main {
           wait: true
         },
         function() {
-          opn(options.baseUrl + '/cart')
+          opn(utils.getBaseUrl(options.url) + '/cart')
         }
       )
     }
