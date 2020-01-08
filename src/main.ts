@@ -38,7 +38,7 @@ class Main {
     }
   }
 
-  private buyIfFound = (options: IOptions, { found, parser }) => {
+  private buyIfFound = (options: IOptions, { found, parser }) : Promise<any> => {
     const ticket = parser.popTicket()
     if (found && ticket) {
       return runFound(ticket.link, { ...options, amount: options.amount - this.amountReserved }).then(result => {
@@ -50,15 +50,13 @@ class Main {
         } else {
           this.notifyIfTicketReserved(options)
         }
-
-        // return result;
       })
     } else {
       return Promise.reject(new NoTicketsFoundError('Found no tickets to buy'))
     }
   }
 
-  private tryNextTicket = (options: IOptions, parser) => {
+  private tryNextTicket = (options: IOptions, parser) : Promise<any> => {
     if (parser.haveAnotherTicket()) {
       logger.info('Found another potential ticket')
 
@@ -71,6 +69,8 @@ class Main {
   }
 
   private notifyIfTicketReserved = options => {
+    logger.info(chalk.blue('Tickets found!'), Date.now() - this.lastDateRequest, 'ms')
+    this.lastDateRequest = Date.now()
     if (this.amountReserved) {
       notifier.notify(
         {
@@ -86,7 +86,7 @@ class Main {
     }
   }
 
-  private runCatchHandler = (options: IOptions, error) => {
+  private runCatchHandler = (options: IOptions, error: Error) => {
     if (error instanceof NoTicketsFoundError) {
       return this.retry(options)
     }
@@ -99,7 +99,6 @@ class Main {
       return Promise.reject(error)
     }
 
-    logger.error('Run execution failed with error', error)
 
     if (options.retryPolicy.retries === -1) {
       this.retries += 1
@@ -115,7 +114,7 @@ class Main {
     return Promise.reject(error)
   }
 
-  private retry = (options: IOptions) => {
+  private retry = (options: IOptions) : Promise<any> => {
     return utils.delay(
       () => {
         return this.run(options)
