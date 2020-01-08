@@ -111,6 +111,7 @@ class Main {
       return this.retry(options)
     }
 
+    //logger.error('Run execution failed with error', error)
     return Promise.reject(error)
   }
 
