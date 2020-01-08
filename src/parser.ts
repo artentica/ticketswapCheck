@@ -1,5 +1,6 @@
 import * as chalk from 'chalk'
 import logger from './logger'
+import * as utils from './utils'
 
 export default class Parser {
   public options: any
