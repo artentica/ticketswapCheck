@@ -56,5 +56,5 @@ export function logErrors(reason: any) {
 }
 
 export function logRequest(url: string, options: any = { method: 'GET' }) {
-  logger.info('%s %s', chalk.inverse(options.method), url)
+  logger.debug('%s %s', chalk.inverse(options.method), url)
 }
