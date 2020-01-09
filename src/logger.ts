@@ -1,15 +1,15 @@
 import debug from 'debug'
 
-const logColor = 'ts:logger'
+import config from './config'
 
+const logColor = 'ts:logger'
 class Logger {
-  public debug = (...args: any) => debug(logColor)(...args)
-  // tslint:disable-next-line
-  public info = (...args: any) => console.log(...args)
-  // tslint:disable-next-line
-  public warn = (...args: any) => console.log(...args)
-  // tslint:disable-next-line
-  public error = (...args: any) => console.error(...args)
+  public debug = (...args: any) => (this.showLogMessage(0) ? debug(logColor)(...args) : null)
+  public info = (...args: any) => (this.showLogMessage(1) ? console.log(...args) : null)
+  public warn = (...args: any) => (this.showLogMessage(2) ? console.log(...args) : null)
+  public error = (...args: any) => (this.showLogMessage(3) ? console.error(...args) : null)
+
+  private showLogMessage = (logLevel: number): boolean => config.logLevel <= logLevel
 }
 
 export default new Logger()
