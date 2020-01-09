@@ -27,7 +27,7 @@ export default class Parser {
 
   get tickets() {
     // Available, sold, searching people
-    return (this.$('#tickets > div').length === 3)?this.$('#tickets > div:first > ul > div > a'): []
+    return this.$('#tickets > div').length === 3 ? this.$('#tickets > div:first > ul > div > a') : []
   }
 
   private getPriceAndCurrency(str: string): { price: number; currency: string } {
@@ -43,7 +43,7 @@ export default class Parser {
     const $ = this.$
     let result: { link: string; price: number; currency: string; numberTicket: number }[] = []
 
-    if(this.tickets.length){
+    if (this.tickets.length) {
       this.tickets.each(function(_i, elem): void {
         const priceAndCurrency = self.getPriceAndCurrency(
           $(elem)

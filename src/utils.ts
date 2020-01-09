@@ -20,7 +20,7 @@ function randomTime(minTime: number, maxTime: number) {
  * @param {number[]} [minTime, maxTime]  - minTime and upper time
  * @returns {Promise} - The Promise of the call function
  */
-export function delay(fn: Function, [minTime, maxTime]: number[]) : Promise<any> {
+export function delay(fn: Function, [minTime, maxTime]: number[]): Promise<any> {
   const time = randomTime(minTime, maxTime)
 
   return new Promise(resolve => {
@@ -30,8 +30,11 @@ export function delay(fn: Function, [minTime, maxTime]: number[]) : Promise<any>
   })
 }
 
-export function getBaseUrl(url : string) : string {
-  return url.split('/').slice(0,3).join('/')
+export function getBaseUrl(url: string): string {
+  return url
+    .split('/')
+    .slice(0, 3)
+    .join('/')
 }
 
 /**

@@ -38,7 +38,7 @@ class Main {
     }
   }
 
-  private buyIfFound = (options: IOptions, { found, parser }) : Promise<any> => {
+  private buyIfFound = (options: IOptions, { found, parser }): Promise<any> => {
     const ticket = parser.popTicket()
     if (found && ticket) {
       return runFound(ticket.link, { ...options, amount: options.amount - this.amountReserved }).then(result => {
@@ -56,7 +56,7 @@ class Main {
     }
   }
 
-  private tryNextTicket = (options: IOptions, parser) : Promise<any> => {
+  private tryNextTicket = (options: IOptions, parser): Promise<any> => {
     if (parser.haveAnotherTicket()) {
       logger.info('Found another potential ticket')
 
@@ -99,7 +99,6 @@ class Main {
       return Promise.reject(error)
     }
 
-
     if (options.retryPolicy.retries === -1) {
       this.retries += 1
       return this.retry(options)
@@ -114,13 +113,10 @@ class Main {
     return Promise.reject(error)
   }
 
-  private retry = (options: IOptions) : Promise<any> => {
-    return utils.delay(
-      () => {
-        return this.run(options)
-      },
-      options.retryPolicy.delay
-    )
+  private retry = (options: IOptions): Promise<any> => {
+    return utils.delay(() => {
+      return this.run(options)
+    }, options.retryPolicy.delay)
   }
 
   public run = (options: IOptions): any => {
