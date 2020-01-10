@@ -15,16 +15,18 @@ class Main {
   private lastDateRequest: number
   private amountReserved: number
   private retries: number
+  private ticketMissed: number
 
   constructor() {
     this.lastDateRequest = Date.now()
     this.amountReserved = 0
     this.retries = 0
+    this.ticketMissed = 0
   }
 
   private checkIfTicketsAvailable = parser => {
     if (parser.ticketsAvailable.length === 0) {
-      logger.info(chalk.blue('No tickets found!'), Date.now() - this.lastDateRequest, 'ms')
+      logger.info(chalk.blue(`No tickets found! ${(this.ticketMissed)?'Ticket Missed: ' + this.ticketMissed : ''}`), Date.now() - this.lastDateRequest, 'ms')
       this.lastDateRequest = Date.now()
       return {
         found: false,
@@ -44,6 +46,7 @@ class Main {
       return runFound(ticket.link, { ...options, amount: options.amount - this.amountReserved }).then(result => {
         // if an amount have been bought we subtract of the total desire
         if (result.amountOfTickets) this.amountReserved += result.amountOfTickets
+        else this.ticketMissed += ticket.numberTicket
         // if nothing have been bought or if we still have
         if (options.amount - this.amountReserved !== 0) {
           return this.tryNextTicket(options, parser)
