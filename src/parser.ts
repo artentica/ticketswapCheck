@@ -26,8 +26,8 @@ export default class Parser {
   }
 
   get tickets() {
-    // Available, sold, searching people
-    return this.$('#tickets > div').length === 3 ? this.$('#tickets > div:first > ul > div > a') : []
+    // Available, sold, buy from another fan,searching people
+    return this.$('#tickets > div').length > 2 ? this.$('#tickets > div:first > ul > div > a') : []
   }
 
   private getPriceAndCurrency(str: string): { price: number; currency: string } {
