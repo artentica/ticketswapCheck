@@ -1,4 +1,5 @@
 import config from './src/config'
 import Main from './src/main'
+import isSignedIn from './src/testConnection'
 
-Main.run(config)
+isSignedIn().then(() => Main.run(config))
